@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-const genderValues = ["Male", "Female", "Other"];
 
 const EmployeeSchema = new mongoose.Schema({
     first_name:{

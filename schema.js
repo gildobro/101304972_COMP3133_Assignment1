@@ -9,9 +9,20 @@ exports.typeDefs = gql `
         password: String
     }
 
+    type Employee {
+        id: ID
+        first_name: String!
+        last_name: String!
+        email: String
+        gender: String
+        salary: Float!
+    }
+
     type Query {
         users: [User]
         user(id: ID!): User
+        employees: [Employee]
+        employee(id: ID!): Employee
     }
 
     type Mutation {
