@@ -9,12 +9,6 @@ exports.typeDefs = gql `
         password: String
     }
 
-    input LoginInput {
-        username: String!
-        email: String!
-        password: String!
-    }
-
     type Employee {
         id: ID
         first_name: String!
@@ -62,23 +56,3 @@ exports.typeDefs = gql `
         deleteEmployee(id: String!): Employee
     }
 `
-
-/*
-            first_name: String!
-            last_name: String!
-            email: String!
-            gender: String
-            salary: Float!
-*/
-/*
-updateEmployee(id: String!
-    firstname: String!
-    lastname: String!
-    email: String!
-    gender: String!
-    city: String!
-    designation: String!
-    salary: Float!): Employee
-
-deleteEmployee(id: String!): Employee
-*/

@@ -5,24 +5,22 @@ const Employee = require('./models/Employees');
 exports.resolvers = {
     Query: {
         login: async (parent, {username, email, password}) => {
-            const user = await User.findOne({ username });
-
-            if(!user){
+            const user = await User.findOne({ username, email });
+            console.log(user.username, user.email, user.password);
+            console.log(user);
+            if(!username){
                 return JSON.stringify({statis: false, "message": "No Username Found"});
             }
-
-            email = user.email
 
             if(!email){
                 return JSON.stringify({statis: false, "message": "No Email Found"});
             }
 
-            password = user.password
             if (!password){
                 return JSON.stringify({statis: false, "message": "Password is incorrect"});
             }
 
-            return {user};
+            return user;
         },
         getEmployees: async (parent, args) => {
             return Employee.find({})
@@ -70,6 +68,8 @@ exports.resolvers = {
             if (!args.id){
                 return JSON.stringify({statis: false, "message": "No ID Found"})
             }
+            let employee = await Employee.findByIdAndDelete(args.id);
+            return employee
         }
     }
 }
