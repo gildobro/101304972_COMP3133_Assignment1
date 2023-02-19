@@ -1,35 +1,17 @@
 const express = require('express');
-const {graphqlHTTP} = require('express-graphql');
-const {buildSchema} = require('graphql');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const dotenv = require('dotenv');
-dotenv.config()
+dotenv.config();
 
 //import typedefs and resolvers
-const TypeDefs = require('./schema')
-const Resolvers = require('./resolvers')
+const TypeDefs = require('./schema');
+const Resolvers = require('./resolvers');
 
 //import ApolloServer
-const { ApolloServer} = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express');
 
-
-
-// Define Apollo Server
-const server = new ApolloServer({
-  typeDefs: TypeDefs.typeDefs,
-  resolvers: Resolvers.resolvers
-})
-
-// //Add Express app as middleware to Apollo Server
-// server.applyMiddleware({app})
-
-//Root Resolver
-const root = {
-    hello: () => `Hello World!`,
-    greetings: (args) => {
-        return `Hello, ${args.name}`
-    },
-};
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@fullstackcluster.by4l3g9.mongodb.net/comp3133_assignment1`, {
   useNewUrlParser: true,
@@ -41,11 +23,24 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS
   console.log(err);
 });
 
-const app = express();
-app.use('/graphql', graphqlHTTP({
-    schema: schema, //set schema
-    rootValue: root, //set Resolver
-    graphiql: true  //Client access
-}));
+// Define Apollo Server
+const server = new ApolloServer({
+    typeDefs: TypeDefs.typeDefs,
+    resolvers: Resolvers.resolvers
+})
 
-app.listen(4001, ()=> console.log('Express GraphQL Server Now Running On http://localhost:4001/graphql'));
+// Define Express Server
+const app = express();
+app.use(bodyParser.json());
+app.use('*', cors());
+// app.use('/graphql', graphqlHTTP({
+//     schema: schema, //set schema
+//     rootValue: root, //set Resolver
+//     graphiql: true  //Client access
+// }));
+
+// //Add Express app as middleware to Apollo Server
+server.applyMiddleware({app})
+  
+
+app.listen(4001, ()=> console.log(`Express GraphQL Server Now Running On http://localhost:4001${server.graphqlPath}`));

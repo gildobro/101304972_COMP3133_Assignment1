@@ -1,12 +1,18 @@
 const { gql } = require('apollo-server-express');
 
-//blah
+
 exports.typeDefs = gql `
     type User {
         id: ID
         username: String
         email: String
         password: String
+    }
+
+    input LoginInput {
+        username: String!
+        email: String!
+        password: String!
     }
 
     type Employee {
@@ -19,29 +25,60 @@ exports.typeDefs = gql `
     }
 
     type Query {
-        users: [User]
-        user(id: ID!): User
-        employees: [Employee]
-        employee(id: ID!): Employee
+        login(username: String!, email: String!, password: String!): User
+        getEmployees: [Employee]
+        getEmployeeByID(id: ID!): Employee
+    }
+
+    input UpdateEmployeeInput {
+        first_name: String
+        last_name: String
+        email: String
+        gender: String
+        salary: Float
     }
 
     type Mutation {
-        createUser(
+        addUser(
             username: String
             email: String
             password: String
         ): User
 
+        addEmployee(
+            first_name: String!
+            last_name: String!
+            email: String
+            gender: String
+            salary: Float!
+        ): Employee
 
-        updateEmployee(id: String!
-            firstname: String!
-            lastname: String!
-            email: String!
-            gender: String!
-            city: String!
-            designation: String!
-            salary: Float!): Employee
-        
+        updateEmployee(
+            id: ID!
+            input: UpdateEmployeeInput
+
+        ): Employee
+
         deleteEmployee(id: String!): Employee
     }
 `
+
+/*
+            first_name: String!
+            last_name: String!
+            email: String!
+            gender: String
+            salary: Float!
+*/
+/*
+updateEmployee(id: String!
+    firstname: String!
+    lastname: String!
+    email: String!
+    gender: String!
+    city: String!
+    designation: String!
+    salary: Float!): Employee
+
+deleteEmployee(id: String!): Employee
+*/

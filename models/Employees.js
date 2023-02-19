@@ -16,7 +16,7 @@ const EmployeeSchema = new mongoose.Schema({
     },
     gender:{
         type: String,
-        enum: ['Male', 'Female', 'Other'],
+        enum: ['Male', 'male', 'femail', 'Female', 'other','Other'],
     },
     salary: {
         type: Number,
